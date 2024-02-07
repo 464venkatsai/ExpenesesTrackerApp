@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -89,11 +90,17 @@ public class MainActivity extends AppCompatActivity {
         }
 //        // Creating New Fragment For Adding New Expenses
         FloatingActionButton fab = findViewById(R.id.addExpenses);
+        try {
             fab.setOnClickListener(view -> {
                 Intent intent = new Intent(MainActivity.this, AddCustomExpenses.class);
                 Log.d("MainActivity", "FloatingActionButton clicked");
                 startActivity(intent);
         });
+            Log.d("Current", "onCreate: ");
+        }catch (Exception e){
+            Log.e("Current", e.toString() );
+        }
+
     }
 //     Receiving Data Of New Expenses
     @Override
@@ -104,4 +111,16 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Data Received " + expenseData, Toast.LENGTH_SHORT).show();
         }
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        // Check if there's a fragment in the back stack
+//        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//            getSupportFragmentManager().popBackStack();
+//        } else {
+//            // If there's no fragment in the back stack, proceed with the default behavior (finish the activity)
+//            super.onBackPressed();
+//        }
+//    }
+
 }

@@ -17,35 +17,38 @@ import java.util.Collections;
 
 public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.ViewHolder> {
     private ArrayList<ImageView> images;
-    private static ArrayList<Boolean> itemSelectedStates;
-    private ArrayList<String> expenseAmount;
+    public static ArrayList<String> expenseAmount;
     private ArrayList<String> expenseDate;
     private ArrayList<String> expenseTag;
     private ArrayList<String> expenseType;
     private ArrayList<String> expenseCustomName;
     private static OnItemClickListener onItemClickListener;
+    private RecyclerViewClickInterface recyclerViewClickInterface;
 
-    public CustomRecyclerView(ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag,ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, Context context){
+    public CustomRecyclerView(ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag,ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, Context context,RecyclerViewClickInterface recyclerViewClickInterface){
         this.images = images;
+        this.recyclerViewClickInterface = recyclerViewClickInterface;
         this.expenseAmount = expenseAmount;
         this.expenseType = expenseType;
         this.expenseTag = expenseTag;
         this.expenseCustomName = expenseCustomName;
         this.expenseDate = expenseDate;
-        this.itemSelectedStates = new ArrayList<>(Collections.nCopies(images.size(), false)); // Initialize all items as not selected
+//        this.itemSelectedStates = new ArrayList<>(Collections.nCopies(images.size(), false)); // Initialize all items as not selected
     }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
-        void onItemLongClick(int position);
+
+        void onLongItemClick(int position);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView name;
         public TextView tag;
         public TextView amount;
         public TextView date;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -54,27 +57,17 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
             tag = itemView.findViewById(R.id.expenseTag);
             date = itemView.findViewById(R.id.expenseDate);
             amount = itemView.findViewById(R.id.expenseAmount);
-
-            itemView.setOnLongClickListener(v -> {
-                if (onItemClickListener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        onItemClickListener.onItemLongClick(position);
-                        return true; // Consume the long click event
-                    }
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recyclerViewClickInterface.onItemClick(getAdapterPosition());
                 }
-                return false;
             });
-
-            itemView.setOnClickListener(v -> {
-                if (onItemClickListener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        onItemClickListener.onItemClick(position);
-                        toggleItemSelected(position); // Toggle selected state
-                        itemView.setSelected(isItemSelected(position)); // Update selected state in UI
-                    }
-                }
+            itemView.setOnLongClickListener(v ->{
+//                expenseAmount.remove(getAdapterPosition());
+//                notifyItemRemoved(getAdapterPosition());
+                recyclerViewClickInterface.onLongItemClick(getAdapterPosition());
+                return true;
             });
         }
 
@@ -116,19 +109,15 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
         String date = expenseDate.get(position);
         String type = expenseType.get(position);
         String tag = expenseTag.get(position);
-        boolean isSelected = isItemSelected(position);
+        boolean isSelected = true;
 
-        holder.bindData(name, amount, type,tag, date, isSelected);
+        holder.bindData(name, amount, type,tag, date, isSelected );
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
         onItemClickListener = listener;
     }
 
-//    public void onItemLongClick(int position) {
-//        toggleItemSelected(position);
-//        notifyDataSetChanged();
-//    }
 
     @Override
     public int getItemCount() {
@@ -140,36 +129,5 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
             return expenseCustomName.get(position);
         }
         return null;
-    }
-
-    public String getDateAtPosition(int position) {
-        if (position >= 0 && position < expenseCustomName.size()) {
-            return expenseCustomName.get(position);
-        }
-        return null;
-    }
-
-    public String getAtPosition(int position) {
-        if (position >= 0 && position < expenseCustomName.size()) {
-            return expenseCustomName.get(position);
-        }
-        return null;
-    }
-
-    public ImageView getItemImageViewAtPosition(int position) {
-        if (position >= 0 && position < expenseCustomName.size()) {
-            return images.get(position);
-        }
-        return null;
-    }
-
-    public static void toggleItemSelected(int position) {
-        itemSelectedStates.set(position, !itemSelectedStates.get(position));
-        Log.d("CustomRecyclerView", "toggleItemSelected: Working");
-        System.out.println("maya");
-    }
-
-    public static boolean isItemSelected(int position) {
-        return itemSelectedStates.get(position);
     }
 }

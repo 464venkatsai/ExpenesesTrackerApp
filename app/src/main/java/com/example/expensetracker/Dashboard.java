@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,9 @@ import java.util.ArrayList;
  */
 public class Dashboard extends Fragment {
     View view;
+    public static TextView totalExpense;
+    public static TextView T;
+    public static TextView totalIncome;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -78,6 +82,10 @@ public class Dashboard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         expenseRecyclerView =  view.findViewById(R.id.expenseRecyclerView);
+        totalExpense = view.findViewById(R.id.totalExpense);
+        totalIncome = view.findViewById(R.id.totalSavings);
+        totalIncome.setText(DBHelper.getTotalIncome(getContext()));
+        totalExpense.setText(DBHelper.getTotalExpenses(getContext()));
         try {
             updateRecyclerViewData(getContext(),expenseRecyclerView,getActivity());
             Log.d("Dashboard", "Dashboard is updated Successfully");

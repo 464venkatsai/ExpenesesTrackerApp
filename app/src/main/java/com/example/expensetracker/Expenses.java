@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -25,8 +26,9 @@ import java.util.ArrayList;
  * Use the {@link Expenses#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Expenses extends Fragment {
+public class Expenses extends Fragment implements RecyclerViewClickInterface{
     View view ;
+    static  TextView totalExpense;
     static ImageView img;
     public  static RecyclerView expenseRecyclerView;
 
@@ -74,8 +76,10 @@ public class Expenses extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_expenses, container, false);
         expenseRecyclerView =  view.findViewById(R.id.expensesAndIncomeRecyclerView);
+        totalExpense = view.findViewById(R.id.titleAmount);
+        totalExpense.setText("-"+DBHelper.getTotalExpenses(getContext()));
         try {
-            updateRecyclerViewExpenses(getContext(),expenseRecyclerView,getActivity());
+            updateRecyclerViewExpenses(getContext(),expenseRecyclerView, (Activity) getActivity(), this);
             Log.d("Dashboard", "Dashboard is updated Successfully");
         }catch (Exception e){
             Log.e("Dashboard", e.toString());
@@ -94,7 +98,7 @@ public class Expenses extends Fragment {
 //                return true;
 //            }
 //        });
-    public static void updateRecyclerViewExpenses(Context context, RecyclerView recyclerView, Activity activity) {
+    public static void updateRecyclerViewExpenses(Context context, RecyclerView recyclerView, Activity activity,RecyclerViewClickInterface recyclerViewClickInterface) {
 //        DBHelper dbHelper = new DBHelper();
         String[] projection = {"name", "amount", "type", "tag", "date", "note"};
         String selection = "type=?";
@@ -120,7 +124,7 @@ public class Expenses extends Fragment {
             images.add(img);
         }
 
-        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount, updatedExpenseType,updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName, context);
+        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount, updatedExpenseType,updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName, context,recyclerViewClickInterface);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(customRecyclerView);
         customRecyclerView.setOnItemClickListener(new CustomRecyclerView.OnItemClickListener() {
@@ -134,16 +138,20 @@ public class Expenses extends Fragment {
             }
 
             @Override
-            public void onItemLongClick(int position) {
-                // Handle item long click
-                Animation rotateAnimation = AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.rotate_animation);
-                ImageView image = customRecyclerView.getItemImageViewAtPosition(position);
-                image.startAnimation(rotateAnimation);
-                image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.selector_icon));
-                Log.d("ExpensesAndIncome", "onItemLongClick: Clicked Successfully");
+            public void onLongItemClick(int position) {
+
             }
         });
+                Log.d("ExpensesAndIncome", "onItemLongClick: Clicked Successfully");
+    }
 
-        Log.d("ExpensesAndIncome", "updateRecyclerViewExpensesAndIncome: CustomRecyclerView is Getting updated");
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    @Override
+    public void onLongItemClick(int position) {
+
     }
 }

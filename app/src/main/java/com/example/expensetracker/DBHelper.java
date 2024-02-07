@@ -89,9 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static ArrayList<ArrayList<String>> fetchData(Context context, String[] projection) {
         return fetchData(context.getApplicationContext(), projection,null,null);
     }
-    public static int getTotalExpenses(Context context) {
-        DBHelper dbHelper = new DBHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    public static int getTotalExpenses(SQLiteDatabase db) {
         Cursor cursor = null;
         int totalExpense = 0;
         try {
@@ -100,7 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     "transactions",
                     projection,
                     "type = ?",
-                    new String[]{"Expense"},
+                    new String[]{"expense"},
                     null,
                     null,
                     null
@@ -115,46 +113,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return totalExpense;
     }
-    public static int getTotalIncome(Context context) {
-        DBHelper dbHelper = new DBHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = null;
-        int totalIncome = 0;
-        try {
-            String[] projection = {"SUM(amount)"};
-            cursor = db.query(
-                    "transactions",
-                    projection,
-                    "type = ?",
-                    new String[]{"Income"},
-                    null,
-                    null,
-                    null
-            );
-            if (cursor != null && cursor.moveToFirst()) {
-                totalIncome = cursor.getInt(0);
-            }
-        } finally{
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return totalIncome;
-    }
 
-    public static void deleteRecord(Context context,int id){
-        DBHelper dbHelper = new DBHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int rowsAffected = db.delete("my_table", "id=?", new String[]{String.valueOf(id)});
-        db.close();
-        if (rowsAffected > 0) {
-            // Deletion successful
-            Log.d("DBHelper", "Record deleted successfully");
-        } else {
-            // No records were deleted
-            Log.d("DBHelper", "No records deleted");
-        }
-    }
     public void setExpenseAmount(ArrayList<String> expenseAmount) {
         this.expenseAmount = expenseAmount;
     }

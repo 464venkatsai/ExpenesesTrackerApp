@@ -21,8 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.expensetracker.ExpensesDetails" />
-        <activity android:name=".AddCustomExpenses"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".AddCustomExpenses" />
     </application>
 
 </manifest>

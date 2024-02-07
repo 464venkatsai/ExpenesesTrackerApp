@@ -83,7 +83,7 @@
                     android:textColor="#FFFFFF" />
 
                 <TextView
-                    android:id="@+id/totalSavings"
+                    android:id="@+id/textView4"
                     android:layout_width="match_parent"
                     android:layout_height="62dp"
                     android:gravity="center"
@@ -113,7 +113,7 @@
                     android:textColor="#FFFFFF" />
 
                 <TextView
-                    android:id="@+id/totalExpense"
+                    android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"

@@ -2,8 +2,10 @@ package com.example.expensetracker;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,9 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,9 +25,8 @@ import java.util.ArrayList;
  * Use the {@link Savings#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Savings extends Fragment implements RecyclerViewClickInterface{
+public class Savings extends Fragment {
     View view;
-    public static TextView savingsAmount;
     public  static RecyclerView savingsRecyclerView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,17 +72,15 @@ public class Savings extends Fragment implements RecyclerViewClickInterface{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_savings, container, false);
         savingsRecyclerView =  view.findViewById(R.id.SavingsRecyclerView);
-        savingsAmount = view.findViewById(R.id.savingsTitleAmount);
-        savingsAmount.setText("+"+DBHelper.getTotalIncome(getContext()));
         try {
-            updateRecyclerViewSavings(getContext(),savingsRecyclerView, getActivity(), this);
+            updateRecyclerViewSavings(getContext(),savingsRecyclerView,getActivity());
             Log.d("Dashboard", "Dashboard is updated Successfully");
         }catch (Exception e){
             Log.e("Dashboard", e.toString());
         }
         return view;
     }
-    public static void updateRecyclerViewSavings(Context context, RecyclerView recyclerView, Activity activity,RecyclerViewClickInterface recyclerViewClickInterface) {
+    public static void updateRecyclerViewSavings(Context context, RecyclerView recyclerView, Activity activity) {
 //        DBHelper dbHelper = new DBHelper();
         String[] projection = {"name", "amount", "type", "tag", "date", "note"};
         String selection = "type=?";
@@ -107,39 +106,30 @@ public class Savings extends Fragment implements RecyclerViewClickInterface{
             images.add(Expenses.img);
         }
 
-        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount, updatedExpenseType,updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName, context,recyclerViewClickInterface);
+        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount, updatedExpenseType,updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName, context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(customRecyclerView);
         customRecyclerView.setOnItemClickListener(new CustomRecyclerView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position) {
-//                // Handle item click
-//                Intent intent = new Intent(context, ExpensesDetails.class);
-//                String customName = customRecyclerView.getCustomNameAtPosition(position);
-//                intent.putExtra("customName", customName);
-//                activity.startActivity(intent);
-//            }
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(activity, "clicked at "+position, Toast.LENGTH_SHORT).show();
+                // Handle item click
+                Intent intent = new Intent(context, ExpensesDetails.class);
+                String customName = customRecyclerView.getCustomNameAtPosition(position);
+                intent.putExtra("customName", customName);
+                activity.startActivity(intent);
             }
 
             @Override
-            public void onLongItemClick(int position) {
-                DBHelper.deleteRecord(context,position);
-                customRecyclerView.notifyItemRemoved(position);
+            public void onItemLongClick(int position) {
+                // Handle item long click
+                Animation rotateAnimation = AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.rotate_animation);
+                ImageView image = customRecyclerView.getItemImageViewAtPosition(position);
+                image.startAnimation(rotateAnimation);
+                image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.selector_icon));
+                Log.d("ExpensesAndIncome", "onItemLongClick: Clicked Successfully");
             }
         });
+
         Log.d("ExpensesAndIncome", "updateRecyclerViewExpensesAndIncome: CustomRecyclerView is Getting updated");
-    }
-
-    @Override
-    public void onItemClick(int position) {
-
-    }
-
-    @Override
-    public void onLongItemClick(int position) {
-
     }
 }

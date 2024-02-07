@@ -74,53 +74,53 @@ public class AddCustomExpenses extends Activity {
 
         // DataBase Section
         dbHelper = new DBHelper(getApplicationContext());
-        try{
-            addTransaction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String customName = newCustomName.getText().toString();
-                    String amount = newAmount.getText().toString();
-                    String date = newDate.getText().toString();
-                    String note = newNote.getText().toString();
-                    String type = transactionType.getSelectedItem().toString(); ;
-                    String tag = inputTag.getSelectedItem().toString();
-                    // Filling all the Values
-                    String[] items = {customName, String.valueOf(amount), date};
-                    String[] itemHints = {"Title", "Amount", "Date"};
-                    System.out.println("newrowid");
-                    long newRowId = 0;
-                    try{
-                        newRowId = dbHelper.addTransaction(new Transaction(customName,amount,type,tag,date,note));
-                        int income = DBHelper.getTotalIncome(getApplicationContext());
-                        int expense = DBHelper.getTotalExpenses(getApplicationContext());
-                        Dashboard.totalIncome.setText("+"+income);
-                        Dashboard.totalExpense.setText("-"+expense);
-                        Expenses.totalExpense.setText("-"+expense);
-                        Savings.savingsAmount.setText("+"+income);
-                        Dashboard.totalAmount.setText(""+(income+expense));
-//                        Dashboard.updateRecyclerViewData(getApplicationContext(),Dashboard.expenseRecyclerView,AddCustomExpenses.this);
-//                        Expenses.updateRecyclerViewExpenses(getApplicationContext(),Expenses.expenseRecyclerView,AddCustomExpenses.this);
-//                        Savings.updateRecyclerViewSavings(getApplicationContext(),Savings.savingsRecyclerView,AddCustomExpenses.this);
-                    }catch (Exception e){
-                        Log.e("DBHelper","here the error is :"+ e.toString());
-                    }
-                    if (newRowId != -1) {
-                        addSnackBar(v, "Successfully Added " + customName, "Success");
-                        Log.d("DBHelper", "Insertion Successful");
-                    } else {
-                        Log.d("DBHelper", "InsertionFailed");
-                        addSnackBar(v, "Failed To Add " + customName, "Fail");
-                    }
-                    newCustomName.setText("");
-                    newAmount.setText("");
-                    newDate.setText("");
-                    newNote.setText("");
+        addTransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String customName = newCustomName.getText().toString();
+                String amount = newAmount.getText().toString();
+                String date = newDate.getText().toString();
+                String note = newNote.getText().toString();
+                String type = transactionType.getSelectedItem().toString(); ;
+                String tag = inputTag.getSelectedItem().toString();
+                // Filling all the Values
+                String[] items = {customName, String.valueOf(amount), date};
+                String[] itemHints = {"Title", "Amount", "Date"};
+                System.out.println("newrowid");
+                long newRowId = 0;
+                try{
+                    newRowId = dbHelper.addTransaction(new Transaction(customName,amount,type,tag,date,note));
+//                    View mainActivity = LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_main,null);
+//                    expenseRecyclerView = mainActivity.findViewById(R.id.expenseRecyclerView);
+                    Dashboard.updateRecyclerViewData(getApplicationContext(),Dashboard.expenseRecyclerView,AddCustomExpenses.this);
+                    Expenses.updateRecyclerViewExpenses(getApplicationContext(),Expenses.expenseRecyclerView,AddCustomExpenses.this);
+                    Savings.updateRecyclerViewSavings(getApplicationContext(),Savings.savingsRecyclerView,AddCustomExpenses.this);
+                }catch (Exception e){
+                    Log.d("DBHelper", e.toString());
                 }
-            });
-            Log.d("AddTransaction", "Successfully Executed");
-        }catch (Exception e){
-            Log.e("AddTransaction", e.toString() );
-        }
+                if (newRowId != -1) {
+                    addSnackBar(v, "Successfully Added " + customName, "Success");
+                    Log.d("DBHelper", "Insertion Successful");
+                } else {
+                    Log.d("DBHelper", "InsertionFailed");
+                    addSnackBar(v, "Failed To Add " + customName, "Fail");
+                }
+                newCustomName.setText("");
+                newAmount.setText("");
+                newDate.setText("");
+                newNote.setText("");
+//                try {
+////                    View customExpenses = LayoutInflater.from(getApplicationContext()).inflate(R.layout.fragment_expenses,null);
+////                    View customSavings = LayoutInflater.from(getApplicationContext()).inflate(R.layout.fragment_savings,null);
+////                    RecyclerView expenseRecyclerView = customExpenses.findViewById(R.id.expensesAndIncomeRecyclerView);
+////                    RecyclerView savingRecyclerView = customSavings.findViewById(R.id.SavingsRecyclerView);
+////                    Dashboard.updateRecyclerViewData(getApplicationContext(),Dashboard.expenseRecyclerView,AddCustomExpenses.this);
+//                    Log.d("updateRecyclerViewData","updateRecyclerViewData : Successfully fetched and Updated in the ExpenseRecyclerView");
+//                }catch (Exception e){
+//                    Log.e("updateRecyclerViewData", "updateRecyclerViewData : "+e.toString() );
+//                }
+            }
+        });
     }
     public static void addSnackBar(View view, String message, String messageType) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
@@ -131,10 +131,6 @@ public class AddCustomExpenses extends Activity {
             snackbar.setBackgroundTint(ContextCompat.getColor(view.getContext(), R.color.warning));
         }
         snackbar.show();
-    }
-    @Override
-    public void onBackPressed(){
-        finish();
     }
 
 }

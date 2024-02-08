@@ -23,15 +23,13 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Expenses#newInstance} factory method to
+ * Use the {@link Savings#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Expenses extends Fragment {
-    View view ;
-    static ImageView img;
-    static TextView totalExpense ;
-    static RecyclerView expenseRecyclerView;
-
+public class Savings extends Fragment {
+    View view;
+    public  static TextView totalSavings;
+    public  static RecyclerView savingsRecyclerView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,7 +39,7 @@ public class Expenses extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Expenses() {
+    public Savings() {
         // Required empty public constructor
     }
 
@@ -51,11 +49,11 @@ public class Expenses extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment expenses_and_income.
+     * @return A new instance of fragment Savings.
      */
     // TODO: Rename and change types and number of parameters
-    public static Expenses newInstance(String param1, String param2) {
-        Expenses fragment = new Expenses();
+    public static Savings newInstance(String param1, String param2) {
+        Savings fragment = new Savings();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -74,23 +72,23 @@ public class Expenses extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_expenses, container, false);
-        expenseRecyclerView =  view.findViewById(R.id.expensesAndIncomeRecyclerView);
-        totalExpense  = view.findViewById(R.id.titleAmount);
-        totalExpense.setText("-"+DBHelper.getTotalExpenses(getContext()));
+        view = inflater.inflate(R.layout.fragment_savings, container, false);
+        savingsRecyclerView =  view.findViewById(R.id.SavingsRecyclerView);
+        totalSavings = view.findViewById(R.id.savingsTitleAmount);
+        totalSavings.setText("+"+DBHelper.getTotalIncome(getContext()));
         try {
-            updateRecyclerViewExpenses(getContext(),expenseRecyclerView,getActivity());
+            updateRecyclerViewSavings(getContext(),savingsRecyclerView,getActivity());
             Log.d("Dashboard", "Dashboard is updated Successfully");
         }catch (Exception e){
             Log.e("Dashboard", e.toString());
         }
         return view;
     }
-    public static void updateRecyclerViewExpenses(Context context, RecyclerView recyclerView, Activity activity) {
+    public static void updateRecyclerViewSavings(Context context, RecyclerView recyclerView, Activity activity) {
 //        DBHelper dbHelper = new DBHelper();
         String[] projection = {"name", "amount", "type", "tag", "date", "note"};
         String selection = "type=?";
-        String[] selectionArgs = {"Expense"};
+        String[] selectionArgs = {"Income"};
 
         ArrayList<ArrayList<String>> incomeData = DBHelper.fetchData(context, projection, selection, selectionArgs);
         ArrayList<String> updatedExpenseCustomName = new ArrayList<>();
@@ -109,13 +107,13 @@ public class Expenses extends Fragment {
             updatedExpenseTag.add(row.get(3));
             updatedExpenseDate.add(row.get(4));
             updatedExpenseNote.add(row.get(5));
-            images.add(img);
+            images.add(Expenses.img);
         }
 
-        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount, updatedExpenseType,updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName, updatedExpenseNote,context);
+        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount, updatedExpenseType,updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName, updatedExpenseAmount,context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(customRecyclerView);
-        totalExpense.setText("-"+DBHelper.getTotalExpenses(context));
+        totalSavings.setText("+"+DBHelper.getTotalIncome(context));
         customRecyclerView.setOnItemClickListener(new CustomRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

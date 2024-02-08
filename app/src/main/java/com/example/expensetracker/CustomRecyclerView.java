@@ -1,8 +1,7 @@
 package com.example.expensetracker;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.provider.ContactsContract;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,16 +20,20 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     private static ArrayList<Boolean> itemSelectedStates;
     private ArrayList<String> expenseAmount;
     private ArrayList<String> expenseDate;
+    private ArrayList<String> expenseTag;
     private ArrayList<String> expenseType;
+    private ArrayList<String> expenseNote;
     private ArrayList<String> expenseCustomName;
     private static OnItemClickListener onItemClickListener;
 
-    public CustomRecyclerView(ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, Context context){
+    public CustomRecyclerView(ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag,ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, ArrayList<String> expenseNote,Context context){
         this.images = images;
         this.expenseAmount = expenseAmount;
         this.expenseType = expenseType;
+        this.expenseTag = expenseTag;
         this.expenseCustomName = expenseCustomName;
         this.expenseDate = expenseDate;
+        this.expenseNote = expenseNote;
         this.itemSelectedStates = new ArrayList<>(Collections.nCopies(images.size(), false)); // Initialize all items as not selected
     }
 
@@ -42,7 +45,7 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView name;
-        public TextView type;
+        public TextView tag;
         public TextView amount;
         public TextView date;
 
@@ -50,9 +53,10 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
             super(itemView);
             image = itemView.findViewById(R.id.expenseImageType);
             name = itemView.findViewById(R.id.expenseCustomName);
-            type = itemView.findViewById(R.id.expenseType);
+            tag = itemView.findViewById(R.id.expenseTag);
             date = itemView.findViewById(R.id.expenseDate);
             amount = itemView.findViewById(R.id.expenseAmount);
+//            note = itemView.findViewById(R.id.expenseAmount);
 
             itemView.setOnLongClickListener(v -> {
                 if (onItemClickListener != null) {
@@ -70,19 +74,23 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         onItemClickListener.onItemClick(position);
-                        toggleItemSelected(position); // Toggle selected state
                         itemView.setSelected(isItemSelected(position)); // Update selected state in UI
                     }
                 }
             });
         }
 
-        public void bindData(String name, String amount, String type, String date, boolean isSelected) {
+        public void bindData(String name, String amount,String type , String tag, String date) {
             this.name.setText(name);
-            this.amount.setText(amount);
-            this.type.setText(type);
+            if (type.equals("Income")){
+                this.amount.setText("+"+amount);
+                this.amount.setTextColor(Color.parseColor("#28BD78"));
+            }else{
+                this.amount.setText("-"+amount);
+                this.amount.setTextColor(Color.parseColor("#d44444"));
+            }
+            this.tag.setText(tag);
             this.date.setText(date);
-            itemView.setSelected(isSelected);
         }
     }
 
@@ -95,9 +103,9 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
         return new ViewHolder(view);
     }
 
-    public void updateData(ArrayList<String> updatedExpenseAmount, ArrayList<String> updatedExpenseType, ArrayList<String> updatedExpenseDate, ArrayList<String> updatedExpenseCustomName) {
+    public void updateData(ArrayList<String> updatedExpenseAmount, ArrayList<String> updatedExpenseTag, ArrayList<String> updatedExpenseDate, ArrayList<String> updatedExpenseCustomName) {
         this.expenseAmount = updatedExpenseAmount;
-        this.expenseType = updatedExpenseType;
+        this.expenseTag = updatedExpenseTag;
         this.expenseDate = updatedExpenseDate;
         this.expenseCustomName = updatedExpenseCustomName;
     }
@@ -108,19 +116,13 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
         String amount = expenseAmount.get(position);
         String date = expenseDate.get(position);
         String type = expenseType.get(position);
-        boolean isSelected = isItemSelected(position);
-
-        holder.bindData(name, amount, type, date, isSelected);
+        String tag = expenseTag.get(position);
+        holder.bindData(name, amount, type,tag, date);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
         onItemClickListener = listener;
     }
-
-//    public void onItemLongClick(int position) {
-//        toggleItemSelected(position);
-//        notifyDataSetChanged();
-//    }
 
     @Override
     public int getItemCount() {
@@ -135,32 +137,42 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     }
 
     public String getDateAtPosition(int position) {
-        if (position >= 0 && position < expenseCustomName.size()) {
-            return expenseCustomName.get(position);
+        if (position >= 0 && position < expenseDate.size()) {
+            return expenseDate.get(position);
+        }
+        return null;
+    }
+    public String getTagAtPosition(int position) {
+        if (position >= 0 && position < expenseTag.size()) {
+            return expenseTag.get(position);
         }
         return null;
     }
 
-    public String getAtPosition(int position) {
-        if (position >= 0 && position < expenseCustomName.size()) {
-            return expenseCustomName.get(position);
+    public String getAmountAtPosition(int position) {
+        if (position >= 0 && position < expenseAmount.size()) {
+            return expenseAmount.get(position);
         }
         return null;
     }
-
+    public String getNoteAtPosition(int position) {
+        if (position >= 0 && position < expenseNote.size()) {
+            return expenseNote.get(position);
+        }
+        return null;
+    }
+    public String getTypeAtPosition(int position) {
+        if (position >= 0 && position < expenseType.size()) {
+            return expenseType.get(position);
+        }
+        return null;
+    }
     public ImageView getItemImageViewAtPosition(int position) {
-        if (position >= 0 && position < expenseCustomName.size()) {
+        if (position >= 0 && position < images.size()) {
             return images.get(position);
         }
         return null;
     }
-
-    public static void toggleItemSelected(int position) {
-        itemSelectedStates.set(position, !itemSelectedStates.get(position));
-        Log.d("CustomRecyclerView", "toggleItemSelected: Working");
-        System.out.println("maya");
-    }
-
     public static boolean isItemSelected(int position) {
         return itemSelectedStates.get(position);
     }

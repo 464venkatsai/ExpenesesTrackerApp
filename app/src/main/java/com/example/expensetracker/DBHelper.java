@@ -70,7 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 selectionArgs,
                 null,
                 null,
-                null
+                "sno DESC"
         );
 
         while (cursor.moveToNext()) {
@@ -80,88 +80,64 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             dataList.add(rowData);
         }
-
         cursor.close();
         db.close();
-
         return dataList;
     }
 
     public static ArrayList<ArrayList<String>> fetchData(Context context, String[] projection) {
-        ArrayList<ArrayList<String>> dataList = new ArrayList<>();
-
+        return fetchData(context.getApplicationContext(), projection,null,null);
+    }
+    public static int getTotalExpenses(Context context) {
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                "transactions",
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        while (cursor.moveToNext()) {
-            ArrayList<String> rowData = new ArrayList<>();
-            for (String column : projection) {
-                rowData.add(cursor.getString(cursor.getColumnIndexOrThrow(column)));
+        Cursor cursor = null;
+        int totalExpense = 0;
+        try {
+            String[] projection = {"SUM(amount)"};
+            cursor = db.query(
+                    "transactions",
+                    projection,
+                    "type = ?",
+                    new String[]{"Expense"},
+                    null,
+                    null,
+                    null
+            );
+            if (cursor != null && cursor.moveToFirst()) {
+                totalExpense = cursor.getInt(0);
             }
-            dataList.add(rowData);
+        } finally{
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-
-        cursor.close();
-        db.close();
-
-        return dataList;
+        return totalExpense;
     }
-
-
-    public void setExpenseAmount(ArrayList<String> expenseAmount) {
-        this.expenseAmount = expenseAmount;
-    }
-
-       public ArrayList<String> getExpenseAmount() {
-        return this.expenseAmount;
-    }
-
-       public ArrayList<String> getExpenseTag() {
-        return this.expenseTag;
-    }
-
-       public ArrayList<String> getExpenseCustomName() {
-        return this.expenseCustomName;
-    }
-
-       public ArrayList<String> getExpenseType() {
-        return this.expenseType;
-    }
-
-    public ArrayList<String> getExpenseDate() {
-        return this.expenseDate;
-    }
-    public ArrayList<String> getExpenseNote() {
-        return this.expenseNote;
-    }
-
-    public void setExpenseDate(ArrayList<String> expenseDate) {
-        this.expenseDate = expenseDate;
-    }
-
-    public void setExpenseType(ArrayList<String> expenseType) {
-        this.expenseType = expenseType;
-    }
-
-    public void setExpenseNote(ArrayList<String> expenseNote) {
-        this.expenseNote = expenseNote;
-    }
-
-    public void setExpenseCustomName(ArrayList<String> expenseCustomName) {
-        this.expenseCustomName = expenseCustomName;
-    }
-
-    public void setExpenseTag(ArrayList<String> expenseTag) {
-        this.expenseTag = expenseTag;
+    public static int getTotalIncome(Context context) {
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = null;
+        int totalExpense = 0;
+        try {
+            String[] projection = {"SUM(amount)"};
+            cursor = db.query(
+                    "transactions",
+                    projection,
+                    "type = ?",
+                    new String[]{"Income"},
+                    null,
+                    null,
+                    null
+            );
+            if (cursor != null && cursor.moveToFirst()) {
+                totalExpense = cursor.getInt(0);
+            }
+        } finally{
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return totalExpense;
     }
 }

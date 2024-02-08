@@ -32,6 +32,7 @@
             android:layout_width="133dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="30dp"
             android:gravity="center|clip_vertical|fill_vertical"
             android:orientation="vertical">
 
@@ -64,7 +65,7 @@
                 android:id="@+id/expenseAmount"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text="+6.30"
                 android:textColor="#28BD78"
                 android:textSize="20sp"
@@ -75,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
+                android:gravity="start|center_vertical"
                 android:text="oct 30,2024"
                 android:textColor="#FFFFFF"
                 android:textSize="10sp" />

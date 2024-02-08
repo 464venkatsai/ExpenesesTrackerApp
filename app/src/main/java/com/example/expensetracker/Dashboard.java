@@ -3,7 +3,6 @@ package com.example.expensetracker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -19,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -29,6 +29,7 @@ import java.util.ArrayList;
  */
 public class Dashboard extends Fragment {
     View view;
+    public static TextView totalExpense,totalAmount,totalSavings;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -79,21 +80,20 @@ public class Dashboard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         expenseRecyclerView =  view.findViewById(R.id.expenseRecyclerView);
+        totalExpense = view.findViewById(R.id.totalExpenses);
+        totalAmount = view.findViewById(R.id.totalAmount);
+        totalSavings = view.findViewById(R.id.totalIncome);
         try {
             updateRecyclerViewData(getContext(),expenseRecyclerView,getActivity());
             Log.d("Dashboard", "Dashboard is updated Successfully");
         }catch (Exception e){
             Log.e("Dashboard", e.toString());
         }
-
         return view;
     }
     public static void updateRecyclerViewData(Context context, RecyclerView recyclerView, Activity activity) {
         String[] projection = {"name", "amount", "type", "tag", "date", "note"};
-        String selection = "type=?";
-        String[] selectionArgs = {"Income"};
-
-        ArrayList<ArrayList<String>> incomeData = DBHelper.fetchData(context, projection, selection, selectionArgs);
+        ArrayList<ArrayList<String>> incomeData = DBHelper.fetchData(context, projection);
         ArrayList<String> updatedExpenseCustomName = new ArrayList<>();
         ArrayList<String> updatedExpenseAmount = new ArrayList<>();
         ArrayList<String> updatedExpenseType = new ArrayList<>();
@@ -109,17 +109,30 @@ public class Dashboard extends Fragment {
             updatedExpenseTag.add(row.get(3));
             updatedExpenseDate.add(row.get(4));
             updatedExpenseNote.add(row.get(5));
-            images.add(ExpensesAndIncome.img);
+            images.add(Expenses.img);
         }
-        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName, context);
+        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName,updatedExpenseNote,context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(customRecyclerView);
+        totalAmount.setText(""+(DBHelper.getTotalIncome(context) + DBHelper.getTotalExpenses(context)));
+        totalExpense.setText("-"+DBHelper.getTotalExpenses(context));
+        totalSavings.setText("+"+DBHelper.getTotalIncome(context));
         customRecyclerView.setOnItemClickListener(new CustomRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(context, ExpensesDetails.class);
                 String customName = customRecyclerView.getCustomNameAtPosition(position);
+                String tag = customRecyclerView.getTagAtPosition(position);
+                String date = customRecyclerView.getDateAtPosition(position);
+                String amount = customRecyclerView.getAmountAtPosition(position);
+                String note = customRecyclerView.getNoteAtPosition(position);
+                String type = customRecyclerView.getTypeAtPosition(position);
                 intent.putExtra("customName", customName);
+                intent.putExtra("tag", tag);
+                intent.putExtra("date", date);
+                intent.putExtra("amount", amount);
+                intent.putExtra("note", note);
+                intent.putExtra("type", type);
                 activity.startActivity(intent);
             }
 

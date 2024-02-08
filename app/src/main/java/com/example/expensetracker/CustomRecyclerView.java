@@ -17,6 +17,7 @@ import java.util.Collections;
 
 public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.ViewHolder> {
     private ArrayList<ImageView> images;
+    private ArrayList<Integer> id;
     private static ArrayList<Boolean> itemSelectedStates;
     private ArrayList<String> expenseAmount;
     private ArrayList<String> expenseDate;
@@ -26,7 +27,8 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     private ArrayList<String> expenseCustomName;
     private static OnItemClickListener onItemClickListener;
 
-    public CustomRecyclerView(ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag,ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, ArrayList<String> expenseNote,Context context){
+    public CustomRecyclerView(ArrayList<Integer> id,ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag,ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, ArrayList<String> expenseNote,Context context){
+        this.id = id;
         this.images = images;
         this.expenseAmount = expenseAmount;
         this.expenseType = expenseType;
@@ -56,7 +58,6 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
             tag = itemView.findViewById(R.id.expenseTag);
             date = itemView.findViewById(R.id.expenseDate);
             amount = itemView.findViewById(R.id.expenseAmount);
-//            note = itemView.findViewById(R.id.expenseAmount);
 
             itemView.setOnLongClickListener(v -> {
                 if (onItemClickListener != null) {
@@ -74,7 +75,6 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         onItemClickListener.onItemClick(position);
-                        itemView.setSelected(isItemSelected(position)); // Update selected state in UI
                     }
                 }
             });
@@ -135,6 +135,10 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
         }
         return null;
     }
+    public int getIdAtPosition(int position) {
+            return id.get(position);
+
+    }
 
     public String getDateAtPosition(int position) {
         if (position >= 0 && position < expenseDate.size()) {
@@ -172,8 +176,5 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
             return images.get(position);
         }
         return null;
-    }
-    public static boolean isItemSelected(int position) {
-        return itemSelectedStates.get(position);
     }
 }

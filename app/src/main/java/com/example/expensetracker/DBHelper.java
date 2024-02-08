@@ -88,6 +88,20 @@ public class DBHelper extends SQLiteOpenHelper {
     public static ArrayList<ArrayList<String>> fetchData(Context context, String[] projection) {
         return fetchData(context.getApplicationContext(), projection,null,null);
     }
+    public static void deleteRecord(Context context,int id) {
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int rowsAffected = db.delete("transactions", "sno=?", new String[]{String.valueOf(id)});
+        db.close();
+
+        if (rowsAffected > 0) {
+            // Deletion successful
+            Log.d("MyDatabaseHelper", "Record deleted successfully");
+        } else {
+            // No records were deleted
+            Log.d("MyDatabaseHelper", "No records deleted");
+        }
+    }
     public static int getTotalExpenses(Context context) {
         DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();

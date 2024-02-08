@@ -84,6 +84,7 @@ public class Dashboard extends Fragment {
         }catch (Exception e){
             Log.e("Dashboard", e.toString());
         }
+
         return view;
     }
     public static void updateRecyclerViewData(Context context, RecyclerView recyclerView, Activity activity) {

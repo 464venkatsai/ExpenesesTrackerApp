@@ -26,9 +26,9 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class Expenses extends Fragment {
-    View view ;
+    View rootView ;
     static ImageView img;
-    public  static RecyclerView expenseRecyclerView;
+    RecyclerView expensesAndIncomeRecyclerView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,17 +71,19 @@ public class Expenses extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_expenses, container, false);
-        expenseRecyclerView =  view.findViewById(R.id.expensesAndIncomeRecyclerView);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View customRecycler = LayoutInflater.from(getContext()).inflate(R.layout.expenses_recycler_view,null);
+        img = customRecycler.findViewById(R.id.expenseImageType);
+        // Inflate the layout for this fragment
+        rootView = inflater.inflate(R.layout.fragment_expenses, container, false);
+        expensesAndIncomeRecyclerView = rootView.findViewById(R.id.expensesAndIncomeRecyclerView);
         try {
-            updateRecyclerViewExpenses(getContext(),expenseRecyclerView,getActivity());
-            Log.d("Dashboard", "Dashboard is updated Successfully");
+            updateRecyclerViewExpenses(getContext(),expensesAndIncomeRecyclerView,getActivity());
+            Log.d("ExpensesAndIncome", " updateRecyclerViewExpensesAndIncome was Successfully");
         }catch (Exception e){
-            Log.e("Dashboard", e.toString());
+            Log.e("ExpensesAndIncome",e.toString() );
         }
-        return view;
-    }
 //        img.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
 //            public boolean onLongClick(View v) {
@@ -94,6 +96,8 @@ public class Expenses extends Fragment {
 //                return true;
 //            }
 //        });
+        return rootView;
+    }
     public static void updateRecyclerViewExpenses(Context context, RecyclerView recyclerView, Activity activity) {
 //        DBHelper dbHelper = new DBHelper();
         String[] projection = {"name", "amount", "type", "tag", "date", "note"};

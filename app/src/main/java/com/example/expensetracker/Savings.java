@@ -26,8 +26,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class Savings extends Fragment {
-    View view;
-    public  static RecyclerView savingsRecyclerView;
+    RecyclerView savingsRecyclerView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,16 +68,12 @@ public class Savings extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_savings, container, false);
-        savingsRecyclerView =  view.findViewById(R.id.SavingsRecyclerView);
-        try {
-            updateRecyclerViewSavings(getContext(),savingsRecyclerView,getActivity());
-            Log.d("Dashboard", "Dashboard is updated Successfully");
-        }catch (Exception e){
-            Log.e("Dashboard", e.toString());
-        }
-        return view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_savings, container, false);
+        savingsRecyclerView = rootView.findViewById(R.id.SavingsRecyclerView);
+        updateRecyclerViewSavings(getContext(),savingsRecyclerView,getActivity());
+        return rootView;
     }
     public static void updateRecyclerViewSavings(Context context, RecyclerView recyclerView, Activity activity) {
 //        DBHelper dbHelper = new DBHelper();

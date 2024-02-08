@@ -3,6 +3,7 @@ package com.example.expensetracker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -89,10 +90,10 @@ public class Dashboard extends Fragment {
     }
     public static void updateRecyclerViewData(Context context, RecyclerView recyclerView, Activity activity) {
         String[] projection = {"name", "amount", "type", "tag", "date", "note"};
-//        String selection = "type=?";
-//        String[] selectionArgs = {"Income"};
+        String selection = "type=?";
+        String[] selectionArgs = {"Income"};
 
-        ArrayList<ArrayList<String>> incomeData = DBHelper.fetchData(context, projection);
+        ArrayList<ArrayList<String>> incomeData = DBHelper.fetchData(context, projection, selection, selectionArgs);
         ArrayList<String> updatedExpenseCustomName = new ArrayList<>();
         ArrayList<String> updatedExpenseAmount = new ArrayList<>();
         ArrayList<String> updatedExpenseType = new ArrayList<>();
@@ -108,9 +109,9 @@ public class Dashboard extends Fragment {
             updatedExpenseTag.add(row.get(3));
             updatedExpenseDate.add(row.get(4));
             updatedExpenseNote.add(row.get(5));
-            images.add(Expenses.img);
+            images.add(ExpensesAndIncome.img);
         }
-        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName, context);
+        CustomRecyclerView customRecyclerView = new CustomRecyclerView(images, updatedExpenseAmount, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName, context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(customRecyclerView);
         customRecyclerView.setOnItemClickListener(new CustomRecyclerView.OnItemClickListener() {

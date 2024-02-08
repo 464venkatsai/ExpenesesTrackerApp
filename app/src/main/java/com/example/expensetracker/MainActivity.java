@@ -2,22 +2,37 @@ package com.example.expensetracker;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<String> dashboardOptions= new ArrayList<>();
@@ -60,22 +75,14 @@ public class MainActivity extends AppCompatActivity {
                         fragmentManager.beginTransaction().
                                 replace(R.id.fragmentContainerView,Dashboard.class,null)
                                 .setReorderingAllowed(true)
-                                .addToBackStack("Dashboard") // Name can be null
+                                .addToBackStack("name") // Name can be null
                                 .commit();
-                    } else if (selectedItem.equals("Savings")) {
-                        fragmentManager.beginTransaction().
-                                replace(R.id.fragmentContainerView, Savings.class,null)
-                                .setReorderingAllowed(true)
-                                .addToBackStack("Expenses") // Name can be null
-                                .commit();
-
                     } else {
                         fragmentManager.beginTransaction().
-                                replace(R.id.fragmentContainerView, Expenses.class,null)
+                                replace(R.id.fragmentContainerView,ExpensesAndIncome.class,null)
                                 .setReorderingAllowed(true)
-                                .addToBackStack("Expenses") // Name can be null
+                                .addToBackStack("name") // Name can be null
                                 .commit();
-
                     }
                     Log.d("CurrentFragment", "Current Fragment is " + selectedItem);
                 }

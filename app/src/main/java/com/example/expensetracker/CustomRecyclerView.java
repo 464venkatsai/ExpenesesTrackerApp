@@ -1,7 +1,8 @@
 package com.example.expensetracker;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +21,14 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     private static ArrayList<Boolean> itemSelectedStates;
     private ArrayList<String> expenseAmount;
     private ArrayList<String> expenseDate;
-    private ArrayList<String> expenseTag;
     private ArrayList<String> expenseType;
     private ArrayList<String> expenseCustomName;
     private static OnItemClickListener onItemClickListener;
 
-    public CustomRecyclerView(ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag,ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, Context context){
+    public CustomRecyclerView(ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, Context context){
         this.images = images;
         this.expenseAmount = expenseAmount;
         this.expenseType = expenseType;
-        this.expenseTag = expenseTag;
         this.expenseCustomName = expenseCustomName;
         this.expenseDate = expenseDate;
         this.itemSelectedStates = new ArrayList<>(Collections.nCopies(images.size(), false)); // Initialize all items as not selected
@@ -43,7 +42,7 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView name;
-        public TextView tag;
+        public TextView type;
         public TextView amount;
         public TextView date;
 
@@ -51,7 +50,7 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
             super(itemView);
             image = itemView.findViewById(R.id.expenseImageType);
             name = itemView.findViewById(R.id.expenseCustomName);
-            tag = itemView.findViewById(R.id.expenseTag);
+            type = itemView.findViewById(R.id.expenseType);
             date = itemView.findViewById(R.id.expenseDate);
             amount = itemView.findViewById(R.id.expenseAmount);
 
@@ -78,16 +77,10 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
             });
         }
 
-        public void bindData(String name, String amount,String type , String tag, String date, boolean isSelected) {
+        public void bindData(String name, String amount, String type, String date, boolean isSelected) {
             this.name.setText(name);
-            if (type.equals("Income")){
-                this.amount.setText("+"+amount);
-                this.amount.setTextColor(Color.parseColor("#28BD78"));
-            }else{
-                this.amount.setText("-"+amount);
-                this.amount.setTextColor(Color.parseColor("#d44444"));
-            }
-            this.tag.setText(tag);
+            this.amount.setText(amount);
+            this.type.setText(type);
             this.date.setText(date);
             itemView.setSelected(isSelected);
         }
@@ -102,9 +95,9 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
         return new ViewHolder(view);
     }
 
-    public void updateData(ArrayList<String> updatedExpenseAmount, ArrayList<String> updatedExpenseTag, ArrayList<String> updatedExpenseDate, ArrayList<String> updatedExpenseCustomName) {
+    public void updateData(ArrayList<String> updatedExpenseAmount, ArrayList<String> updatedExpenseType, ArrayList<String> updatedExpenseDate, ArrayList<String> updatedExpenseCustomName) {
         this.expenseAmount = updatedExpenseAmount;
-        this.expenseTag = updatedExpenseTag;
+        this.expenseType = updatedExpenseType;
         this.expenseDate = updatedExpenseDate;
         this.expenseCustomName = updatedExpenseCustomName;
     }
@@ -115,10 +108,9 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
         String amount = expenseAmount.get(position);
         String date = expenseDate.get(position);
         String type = expenseType.get(position);
-        String tag = expenseTag.get(position);
         boolean isSelected = isItemSelected(position);
 
-        holder.bindData(name, amount, type,tag, date, isSelected);
+        holder.bindData(name, amount, type, date, isSelected);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){

@@ -8,6 +8,7 @@
     tools:context=".Dashboard">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        style="bold"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -36,18 +37,18 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingTop="15dp"
-                    android:text="Total Amount"
-                    android:textColor="@color/textColor" />
+                    android:text="Balance"
+                    android:textColor="#ffa500" />
 
                 <TextView
-                    android:id="@+id/totalAmount"
+                    android:id="@+id/remainingAmount"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/white"
                     android:gravity="center"
                     android:text="12000"
                     android:textAlignment="gravity"
-                    android:textColor="@color/textColor"
+                    android:textColor="#ffa500"
                     android:textColorHighlight="#000000"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -64,11 +65,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:gravity="bottom|center_horizontal"
-                    android:text="Remaining Amount"
+                    android:text="Total Amount"
+                    android:textColor="@color/black"
                     android:textStyle="normal" />
 
                 <TextView
-                    android:id="@+id/remainingAmount"
+                    android:id="@+id/totalAmount"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -109,8 +111,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingTop="15dp"
-                    android:text="Total Income"
-                    android:textColor="@color/textColor" />
+                    android:text="Savings"
+                    android:textColor="@color/saving" />
 
                 <TextView
                     android:id="@+id/totalIncome"
@@ -140,8 +142,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingTop="15dp"
-                    android:text="Total Expenses"
-                    android:textColor="@color/textColor" />
+                    android:text="Expense"
+                    android:textColor="@color/expense" />
 
                 <TextView
                     android:id="@+id/totalExpenses"

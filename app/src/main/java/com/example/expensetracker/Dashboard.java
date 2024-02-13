@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,6 +131,7 @@ public class Dashboard extends Fragment {
                     String note = customRecyclerView.getNoteAtPosition(position);
                     String type = customRecyclerView.getTypeAtPosition(position);
                     int id = customRecyclerView.getIdAtPosition(position);
+//                    HashMap<String, Object> images = new HashMap<>();
                     Log.e("position", "Position :" +position );
                     intent.putExtra("customName", customName);
                     intent.putExtra("tag", tag);
@@ -174,10 +177,10 @@ public class Dashboard extends Fragment {
         String savingsColor = "#28BD78";
         if (val>=0){
             remainingAmount.setText("+"+val);
-            remainingAmount.setTextColor(Color.parseColor(savingsColor));
+//            remainingAmount.setTextColor(Color.parseColor(savingsColor));
         }else{
             remainingAmount.setText("-"+val);
-            remainingAmount.setTextColor(Color.parseColor((expenseColor)));
+//            remainingAmount.setTextColor(Color.parseColor((expenseColor)));
         }
         totalExpense.setText("-"+DBHelper.getTotalExpenses(context));
         totalSavings.setText("+"+DBHelper.getTotalIncome(context));

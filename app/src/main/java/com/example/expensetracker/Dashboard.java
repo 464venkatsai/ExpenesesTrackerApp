@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -100,7 +101,6 @@ public class Dashboard extends Fragment {
         ArrayList<String> updatedExpenseDate = new ArrayList<>();
         ArrayList<String> updatedExpenseNote = new ArrayList<>();
         ArrayList<Integer> updatedId = new ArrayList<>();
-        ArrayList<ImageView> images = new ArrayList<>();
 
         for (ArrayList<String> row : incomeData) {
             updatedId.add(Integer.parseInt(row.get(0)));
@@ -110,9 +110,8 @@ public class Dashboard extends Fragment {
             updatedExpenseTag.add(row.get(4));
             updatedExpenseDate.add(row.get(5));
             updatedExpenseNote.add(row.get(6));
-            images.add(Expenses.img);
         }
-        CustomRecyclerView customRecyclerView = new CustomRecyclerView(updatedId,images, updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName,updatedExpenseNote,context);
+        CustomRecyclerView customRecyclerView = new CustomRecyclerView(updatedId, updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName,updatedExpenseNote,context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(customRecyclerView);
         Dashboard.setAllAmounts(context);

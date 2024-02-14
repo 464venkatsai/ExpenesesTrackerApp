@@ -54,7 +54,6 @@ public class AddCustomExpenses extends Activity {
         newDate = findViewById(R.id.newDate);
         newNote= findViewById(R.id.newNote);
         newDate.setText(getCustomFormattedDateTime());
-
         addTransaction = findViewById(R.id.addNewTransaction);
 
         // Dynamically + Statically Creating And Creating the Types
@@ -67,7 +66,7 @@ public class AddCustomExpenses extends Activity {
         defaultTags.add("Entertainment");
         defaultTags.add("Job");
         defaultTags.add("Education");
-        defaultTags.add("Education");
+        defaultTags.add("House Hold");
         defaultTags.add("Food");
         defaultTags.add("Traveling");
         defaultTags.add("Hospital");

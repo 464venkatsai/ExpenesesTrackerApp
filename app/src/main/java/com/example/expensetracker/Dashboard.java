@@ -179,7 +179,7 @@ public class Dashboard extends Fragment {
             remainingAmount.setText("+"+val);
 //            remainingAmount.setTextColor(Color.parseColor(savingsColor));
         }else{
-            remainingAmount.setText("-"+val);
+            remainingAmount.setText(""+val);
 //            remainingAmount.setTextColor(Color.parseColor((expenseColor)));
         }
         totalExpense.setText("-"+DBHelper.getTotalExpenses(context));

@@ -65,6 +65,7 @@ public class ExpensesDetails extends AppCompatActivity {
         defaultTags.add("House Hold");
         defaultTags.add("Food");
         defaultTags.add("Traveling");
+        defaultTags.add("Personal");
         defaultTags.add("Hospital");
         defaultTags.add("Others");
 

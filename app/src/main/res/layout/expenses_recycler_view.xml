@@ -22,9 +22,11 @@
 
         <ImageView
             android:id="@+id/expenseImageType"
-            android:layout_width="63dp"
-            android:layout_height="51dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             app:srcCompat="@drawable/folder" />
 
         <LinearLayout

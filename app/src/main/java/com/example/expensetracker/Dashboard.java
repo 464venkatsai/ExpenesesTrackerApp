@@ -3,7 +3,6 @@ package com.example.expensetracker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -23,8 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +31,6 @@ import java.util.Objects;
 public class Dashboard extends Fragment {
     View view;
     public static TextView totalExpense,totalAmount,totalSavings,remainingAmount;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -97,13 +93,13 @@ public class Dashboard extends Fragment {
         String[] projection = {"sno","name", "amount", "type", "tag", "date", "note"};
         ArrayList<ArrayList<String>> incomeData = DBHelper.fetchData(context, projection);
         ArrayList<String> updatedExpenseCustomName = new ArrayList<>();
-        ArrayList<Integer> updatedId = new ArrayList<>();
         ArrayList<String> updatedExpenseAmount = new ArrayList<>();
         ArrayList<String> updatedExpenseType = new ArrayList<>();
         ArrayList<String> updatedExpenseTag = new ArrayList<>();
         ArrayList<String> updatedExpenseDate = new ArrayList<>();
         ArrayList<String> updatedExpenseNote = new ArrayList<>();
-        ArrayList<ImageView> images = new ArrayList<>();
+        ArrayList<Integer> updatedId = new ArrayList<>();
+        ArrayList<Drawable> images = new ArrayList<>();
 
         for (ArrayList<String> row : incomeData) {
             updatedId.add(Integer.parseInt(row.get(0)));
@@ -113,7 +109,7 @@ public class Dashboard extends Fragment {
             updatedExpenseTag.add(row.get(4));
             updatedExpenseDate.add(row.get(5));
             updatedExpenseNote.add(row.get(6));
-            images.add(Expenses.img);
+            images.add(context.getDrawable(R.drawable.food));
         }
         CustomRecyclerView customRecyclerView = new CustomRecyclerView(updatedId,images, updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName,updatedExpenseNote,context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -132,7 +128,6 @@ public class Dashboard extends Fragment {
                     String note = customRecyclerView.getNoteAtPosition(position);
                     String type = customRecyclerView.getTypeAtPosition(position);
                     int id = customRecyclerView.getIdAtPosition(position);
-//                    HashMap<String, Object> images = new HashMap<>();
                     Log.e("position", "Position :" +position );
                     intent.putExtra("customName", customName);
                     intent.putExtra("tag", tag);

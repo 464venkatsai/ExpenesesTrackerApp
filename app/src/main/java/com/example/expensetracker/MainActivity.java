@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,18 +17,33 @@ import android.widget.Spinner;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<String> dashboardOptions= new ArrayList<>();
     public static String currentFragment;
     public static MediaPlayer mediaPlayerOnClick;
     public static MediaPlayer mediaPlayerOnDelete;
+    public static Map<String, Drawable> imageMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imageMap = new HashMap<>();
 
+        // Add images to the HashMap
+        imageMap.put("Entertainment", getApplicationContext().getResources().getDrawable(R.drawable.entertainment));
+        imageMap.put("House Hold", getApplicationContext().getResources().getDrawable(R.drawable.household));
+        imageMap.put("Others", getApplicationContext().getResources().getDrawable(R.drawable.other));
+        imageMap.put("Education", getApplicationContext().getResources().getDrawable(R.drawable.education));
+        imageMap.put("Job", getApplicationContext().getResources().getDrawable(R.drawable.job));
+        imageMap.put("Hospital", getApplicationContext().getResources().getDrawable(R.drawable.hospital));
+        imageMap.put("Traveling", getApplicationContext().getResources().getDrawable(R.drawable.traveling));
+        imageMap.put("Food", getApplicationContext().getResources().getDrawable(R.drawable.food));
+        imageMap.put("Personal", getApplicationContext().getResources().getDrawable(R.drawable.personal));
 //        // DashBoard Updation
         Spinner dashboard = findViewById(R.id.dashBoard);
         dashboardOptions.add("Dashboard");

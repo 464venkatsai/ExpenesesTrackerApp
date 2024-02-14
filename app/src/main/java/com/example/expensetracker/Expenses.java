@@ -21,8 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +30,6 @@ import java.util.Map;
 public class Expenses extends Fragment {
     View view ;
     static ImageView img;
-    public static Map<String, Drawable> imageMap;
     static TextView totalExpense ;
     public static RecyclerView expenseRecyclerView;
 
@@ -44,7 +41,6 @@ public class Expenses extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
 
     public Expenses() {
         // Required empty public constructor
@@ -83,15 +79,6 @@ public class Expenses extends Fragment {
         Log.d("ExpenseTracker", "Expenses onCreateView: Fragment Expenses Shown Successfully");
         expenseRecyclerView =  view.findViewById(R.id.expensesAndIncomeRecyclerView);
         totalExpense  = view.findViewById(R.id.titleAmount);
-        imageMap = new HashMap<>();
-        imageMap.put("Entertainment", getContext().getResources().getDrawable(R.drawable.entertainment));
-        imageMap.put("Education", getContext().getResources().getDrawable(R.drawable.education));
-        imageMap.put("Others", getContext().getResources().getDrawable(R.drawable.other));
-        imageMap.put("Traveling", getContext().getResources().getDrawable(R.drawable.traveling));
-        imageMap.put("Hospital", getContext().getResources().getDrawable(R.drawable.hospital));
-        imageMap.put("Job", getContext().getResources().getDrawable(R.drawable.job));
-        imageMap.put("Food", getContext().getResources().getDrawable(R.drawable.food));
-        imageMap.put("House Hold", getContext().getResources().getDrawable(R.drawable.household));
         try {
             totalExpense.setText("-"+DBHelper.getTotalExpenses(getContext()));
             updateRecyclerViewExpenses(getContext(),getActivity());
@@ -113,7 +100,7 @@ public class Expenses extends Fragment {
         ArrayList<String> updatedExpenseDate = new ArrayList<>();
         ArrayList<String> updatedExpenseNote = new ArrayList<>();
         ArrayList<Integer> updatedId = new ArrayList<>();
-        ArrayList<ImageView> images = new ArrayList<>();
+        ArrayList<Drawable> images = new ArrayList<>();
 
         for (ArrayList<String> row : incomeData) {
             updatedId.add(Integer.parseInt(row.get(0)));
@@ -123,7 +110,7 @@ public class Expenses extends Fragment {
             updatedExpenseTag.add(row.get(4));
             updatedExpenseDate.add(row.get(5));
             updatedExpenseNote.add(row.get(6));
-            images.add(Expenses.img);
+            images.add(context.getDrawable(R.drawable.food));
         }
         CustomRecyclerView customRecyclerView = new CustomRecyclerView(updatedId,images,updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName,updatedExpenseNote,context);
         Expenses.getExpenseRecyclerView().setLayoutManager(new LinearLayoutManager(context));

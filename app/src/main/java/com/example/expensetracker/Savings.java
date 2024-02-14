@@ -98,7 +98,8 @@ public class Savings extends Fragment {
         ArrayList<String> updatedExpenseDate = new ArrayList<>();
         ArrayList<String> updatedExpenseNote = new ArrayList<>();
         ArrayList<Integer> updatedId = new ArrayList<>();
-        ArrayList<ImageView> images = new ArrayList<>();
+        ArrayList<Drawable> images = new ArrayList<>();
+
         for (ArrayList<String> row : incomeData) {
             updatedId.add(Integer.parseInt(row.get(0)));
             updatedExpenseCustomName.add(row.get(1));
@@ -107,9 +108,9 @@ public class Savings extends Fragment {
             updatedExpenseTag.add(row.get(4));
             updatedExpenseDate.add(row.get(5));
             updatedExpenseNote.add(row.get(6));
-            images.add(Expenses.img);
+            images.add(context.getDrawable(R.drawable.food));
         }
-        CustomRecyclerView customRecyclerView = new CustomRecyclerView(updatedId, images,updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName,updatedExpenseNote,context);
+        CustomRecyclerView customRecyclerView = new CustomRecyclerView(updatedId,images, updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName,updatedExpenseNote,context);
         Savings.getSavingsRecyclerView().setLayoutManager(new LinearLayoutManager(context));
         Savings.getSavingsRecyclerView().setAdapter(customRecyclerView);
         Savings.setTotalSavings(context);

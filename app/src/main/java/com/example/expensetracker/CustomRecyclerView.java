@@ -2,6 +2,7 @@ package com.example.expensetracker;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import java.util.Collections;
 
 public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.ViewHolder> {
     private ArrayList<Integer> id;
-    private ArrayList<ImageView> images;
+    private ArrayList<Drawable> images;
     private static ArrayList<Boolean> itemSelectedStates;
     private ArrayList<String> expenseAmount;
     private ArrayList<String> expenseDate;
@@ -27,7 +28,7 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     private ArrayList<String> expenseCustomName;
     private static OnItemClickListener onItemClickListener;
 
-    public CustomRecyclerView(ArrayList<Integer> id,ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag,ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, ArrayList<String> expenseNote,Context context){
+    public CustomRecyclerView(ArrayList<Integer> id, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag, ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, ArrayList<String> expenseNote, Context context){
         this.id = id;
         this.images = images;
         this.expenseAmount = expenseAmount;
@@ -90,6 +91,7 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
                 this.amount.setTextColor(Color.parseColor("#d44444"));
             }
             this.tag.setText(tag);
+            this.image.setImageDrawable(Expenses.imageMap.get(tag));
             this.date.setText(date);
         }
     }
@@ -173,12 +175,6 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     public String getTypeAtPosition(int position) {
         if (position >= 0 && position < expenseType.size()) {
             return expenseType.get(position);
-        }
-        return null;
-    }
-    public ImageView getItemImageViewAtPosition(int position) {
-        if (position >= 0 && position < images.size()) {
-            return images.get(position);
         }
         return null;
     }

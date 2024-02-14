@@ -97,12 +97,13 @@ public class Dashboard extends Fragment {
         String[] projection = {"sno","name", "amount", "type", "tag", "date", "note"};
         ArrayList<ArrayList<String>> incomeData = DBHelper.fetchData(context, projection);
         ArrayList<String> updatedExpenseCustomName = new ArrayList<>();
+        ArrayList<Integer> updatedId = new ArrayList<>();
         ArrayList<String> updatedExpenseAmount = new ArrayList<>();
         ArrayList<String> updatedExpenseType = new ArrayList<>();
         ArrayList<String> updatedExpenseTag = new ArrayList<>();
         ArrayList<String> updatedExpenseDate = new ArrayList<>();
         ArrayList<String> updatedExpenseNote = new ArrayList<>();
-        ArrayList<Integer> updatedId = new ArrayList<>();
+        ArrayList<ImageView> images = new ArrayList<>();
 
         for (ArrayList<String> row : incomeData) {
             updatedId.add(Integer.parseInt(row.get(0)));
@@ -112,8 +113,9 @@ public class Dashboard extends Fragment {
             updatedExpenseTag.add(row.get(4));
             updatedExpenseDate.add(row.get(5));
             updatedExpenseNote.add(row.get(6));
+            images.add(Expenses.img);
         }
-        CustomRecyclerView customRecyclerView = new CustomRecyclerView(updatedId, updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName,updatedExpenseNote,context);
+        CustomRecyclerView customRecyclerView = new CustomRecyclerView(updatedId,images, updatedExpenseAmount,updatedExpenseType, updatedExpenseTag, updatedExpenseDate, updatedExpenseCustomName,updatedExpenseNote,context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(customRecyclerView);
         Dashboard.setAllAmounts(context);

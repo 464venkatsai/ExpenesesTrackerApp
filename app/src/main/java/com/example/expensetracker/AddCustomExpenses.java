@@ -98,11 +98,6 @@ public class AddCustomExpenses extends Activity {
                 String note = newNote.getText().toString();
                 String type = transactionType.getSelectedItem().toString(); ;
                 String tag = inputTag.getSelectedItem().toString();
-
-                // Filling all the Values
-                String[] items = {customName, String.valueOf(amount), date};
-                String[] itemHints = {"Title", "Amount", "Date"};
-
                 long newRowId = 0;
                 try{
                     newRowId = dbHelper.addTransaction(new Transaction(customName,amount,type,tag,date,note));

@@ -18,7 +18,7 @@ import java.util.Collections;
 
 public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.ViewHolder> {
     private ArrayList<Integer> id;
-    private ArrayList<Drawable> images;
+    private ArrayList<ImageView> images;
     private static ArrayList<Boolean> itemSelectedStates;
     private ArrayList<String> expenseAmount;
     private ArrayList<String> expenseDate;
@@ -28,8 +28,9 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     private ArrayList<String> expenseCustomName;
     private static OnItemClickListener onItemClickListener;
 
-    public CustomRecyclerView(ArrayList<Integer> id, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag, ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, ArrayList<String> expenseNote, Context context){
+    public CustomRecyclerView(ArrayList<Integer> id,ArrayList<ImageView> images, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag,ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, ArrayList<String> expenseNote,Context context){
         this.id = id;
+        this.images = images;
         this.expenseAmount = expenseAmount;
         this.expenseType = expenseType;
         this.expenseTag = expenseTag;
@@ -38,6 +39,7 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
         this.expenseNote = expenseNote;
         this.itemSelectedStates = new ArrayList<>(Collections.nCopies(images.size(), false)); // Initialize all items as not selected
     }
+
 
     public interface OnItemClickListener {
         void onItemClick(int position);

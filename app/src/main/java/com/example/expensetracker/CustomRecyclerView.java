@@ -30,7 +30,6 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
 
     public CustomRecyclerView(ArrayList<Integer> id, ArrayList<String> expenseAmount, ArrayList<String> expenseType, ArrayList<String> expenseTag, ArrayList<String> expenseDate, ArrayList<String> expenseCustomName, ArrayList<String> expenseNote, Context context){
         this.id = id;
-        this.images = images;
         this.expenseAmount = expenseAmount;
         this.expenseType = expenseType;
         this.expenseTag = expenseTag;
@@ -105,13 +104,6 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
         return new ViewHolder(view);
     }
 
-    public void updateData(ArrayList<String> updatedExpenseAmount, ArrayList<String> updatedExpenseTag, ArrayList<String> updatedExpenseDate, ArrayList<String> updatedExpenseCustomName) {
-        this.expenseAmount = updatedExpenseAmount;
-        this.expenseTag = updatedExpenseTag;
-        this.expenseDate = updatedExpenseDate;
-        this.expenseCustomName = updatedExpenseCustomName;
-    }
-
     @Override
     public void onBindViewHolder(@NonNull CustomRecyclerView.ViewHolder holder, int position) {
         int sno = id.get(position);
@@ -126,7 +118,6 @@ public class CustomRecyclerView extends RecyclerView.Adapter<CustomRecyclerView.
     public void setOnItemClickListener(OnItemClickListener listener){
         onItemClickListener = listener;
     }
-
     @Override
     public int getItemCount() {
         return expenseCustomName.size();
